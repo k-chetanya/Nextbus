@@ -146,12 +146,12 @@
         document.getElementById("route-info").innerText = `From ${start} to ${destination}`;
 
         // Dummy bus data
-        const buses = [
-            { number: "17481", name: "Tirupati Express", time: "3:25 AM", duration: "35 min", price: "₹30" },
-            { number: "22882", name: "Pune Superfast Express", time: "4:00 AM", duration: "38 min", price: "₹45" },
-            { number: "22875", name: "Guntur Uday Express", time: "5:20 AM", duration: "30 min", price: "₹30" },
-            { number: "12805", name: "Janmabhoomi SF Express", time: "6:20 AM", duration: "23 min", price: "₹45" }
-        ];
+const buses = [
+    { number: "1781", name: "Pallevelugu", time: "3:25 PM", duration: "35 min", price: "₹30" },
+    { number: "2288", name: "Metro Express", time: "4:00 PM", duration: "38 min", price: "₹45" },
+    { number: "2875", name: "Ordinary City Bus", time: "5:20 PM", duration: "45 min", price: "₹30" },
+    { number: "2805", name: "Non Stop Express", time: "6:20 PM", duration: "23 min", price: "₹45" }
+];
 
         let busList = document.getElementById("bus-list");
         buses.forEach(bus => {
