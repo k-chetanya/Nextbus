@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Buses</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Import Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        /* College Image */
+        .clg img {
+            width: 100%;
+            display: block;
+        }
+
+        /* Header Section */
+        .header {
+            background-color: #1a73e8; /* Blue */
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 600;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background-color: #1557a0; /* Darker Blue */
+            padding: 10px;
+            text-align: center;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        .navbar a:hover {
+            color: #ffa500; /* Orange */
+        }
+
+        /* Main Container */
+        .container {
+            padding: 20px;
+            max-width: 800px;
+            margin: 20px auto;
+        }
+
+        /* Route Info */
+        #route-info {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Bus Card Styling */
+        .bus-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bus-card strong {
+            font-size: 1.1rem;
+            color: #1a73e8; /* Blue */
+        }
+
+        .bus-card .details {
+            flex: 1;
+            margin-left: 15px;
+        }
+
+        .bus-card .details p {
+            margin: 5px 0;
+            color: #555;
+        }
+
+        .bus-card button {
+            background-color: #ffa500; /* Orange */
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .bus-card button:hover {
+            background-color: #e59400; /* Darker Orange */
+        }
+    </style>
+</head>
+<body>
+    <!-- College Image -->
+    <div class="clg">
+        <img src="https://vignaniit.edu.in/images/09%20copy-1.jpg" alt="College Image">
+    </div>
+
+    <!-- Header and Navigation Bar -->
+    <div class="header">
+        <h1>NextBus</h1>
+    </div>
+    <div class="navbar">
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Contact</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Available Buses</h1>
+        <p id="route-info"></p>
+        <div id="bus-list"></div>
+    </div>
+
+    <script>
+        // Get route details
+        const urlParams = new URLSearchParams(window.location.search);
+        const start = urlParams.get('start');
+        const destination = urlParams.get('destination');
+        document.getElementById("route-info").innerText = `From ${start} to ${destination}`;
+
+        // Dummy bus data
+        const buses = [
+            { number: "17481", name: "Tirupati Express", time: "3:25 AM", duration: "35 min", price: "₹30" },
+            { number: "22882", name: "Pune Superfast Express", time: "4:00 AM", duration: "38 min", price: "₹45" },
+            { number: "22875", name: "Guntur Uday Express", time: "5:20 AM", duration: "30 min", price: "₹30" },
+            { number: "12805", name: "Janmabhoomi SF Express", time: "6:20 AM", duration: "23 min", price: "₹45" }
+        ];
+
+        let busList = document.getElementById("bus-list");
+        buses.forEach(bus => {
+            let card = document.createElement("div");
+            card.className = "bus-card";
+            card.innerHTML = `
+                <div>
+                    <strong>${bus.name}</strong>
+                    <p>Bus Number: ${bus.number}</p>
+                </div>
+                <div class="details">
+                    <p>Departure: ${bus.time}</p>
+                    <p>Duration: ${bus.duration}</p>
+                    <p>Price: ${bus.price}</p>
+                </div>
+                <button onclick="trackBus('${bus.number}')">Track</button>
+            `;
+            busList.appendChild(card);
+        });
+
+        function trackBus(busNumber) {
+            window.location.href = `tracking.html?bus=${busNumber}&start=${start}&destination=${destination}`;
+        }
+    </script>
+</body>
+</html>

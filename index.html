@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NextBus - Find Your Bus</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Import Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        /* College Image */
+        .clg img {
+            width: 100%;
+            display: block;
+        }
+
+        /* Header Section */
+        .header {
+            background-color: #1a73e8; /* Blue */
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 600;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background-color: #1557a0; /* Darker Blue */
+            padding: 10px;
+            text-align: center;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        .navbar a:hover {
+            color: #ffa500; /* Orange */
+        }
+
+        /* Main Container */
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            padding: 20px;
+        }
+
+        /* Attractive Labels */
+        label {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(90deg, #1a73e8, #1557a0); /* Blue Gradient */
+            padding: 10px 20px;
+            border-radius: 25px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-transform: uppercase;
+        }
+
+        /* Dropdown Styling */
+        select {
+            width: 250px;
+            padding: 10px;
+            font-size: 1rem;
+            border: 2px solid #1a73e8; /* Blue */
+            border-radius: 10px;
+            background-color: white;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+
+        select:hover {
+            border-color: #ffa500; /* Orange */
+        }
+
+        /* Button Styling */
+        button {
+            width: 250px;
+            padding: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: white;
+            background-color: #ffa500; /* Orange */
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #e59400; /* Darker Orange */
+        }
+    </style>
+</head>
+<body>
+    <!-- College Image -->
+    <div class="clg">
+        <img src="https://vignaniit.edu.in/images/09%20copy-1.jpg" alt="College Image">
+    </div>
+
+    <!-- Header and Navigation Bar -->
+    <div class="header">
+        <h1>NextBus</h1>
+    </div>
+    <div class="navbar">
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Contact</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <label for="start">Starting Point</label>
+        <select id="start">
+            <option value="Srikakulam">Srikakulam</option>
+            <option value="Visakhapatnam">Visakhapatnam</option>
+            <option value="Anakapalli">Anakapalli</option>
+            <option value="Duvvada">Duvvada</option>
+            <option value="Vizianagaram">Vizianagaram</option>
+        </select>
+
+        <label for="destination">Destination Point</label>
+        <select id="destination">
+            <option value="Srikakulam">Srikakulam</option>
+            <option value="Visakhapatnam">Visakhapatnam</option>
+            <option value="Anakapalli">Anakapalli</option>
+            <option value="Duvvada">Duvvada</option>
+            <option value="Vizianagaram">Vizianagaram</option>
+        </select>
+
+        <button onclick="searchBuses()">Find Buses</button>
+    </div>
+
+    <script>
+        function searchBuses() {
+            let start = document.getElementById("start").value;
+            let destination = document.getElementById("destination").value;
+            if (start === destination) {
+                alert("Starting and destination points cannot be the same.");
+                return;
+            }
+            window.location.href = `buses.html?start=${start}&destination=${destination}`;
+        }
+    </script>
+</body>
+</html>

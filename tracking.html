@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Tracking</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Import Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <!-- Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        /* College Image */
+        .clg img {
+            width: 100%;
+            display: block;
+        }
+
+        /* Header Section */
+        .header {
+            background-color: #1a73e8; /* Blue */
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 600;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background-color: #1557a0; /* Darker Blue */
+            padding: 10px;
+            text-align: center;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        .navbar a:hover {
+            color: #ffa500; /* Orange */
+        }
+
+        /* Main Container */
+        .container {
+            padding: 20px;
+            max-width: 800px;
+            margin: 20px auto;
+        }
+
+        /* Route Info */
+        #route-info {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        /* Bus Number */
+        #bus-number {
+            color: #1a73e8; /* Blue */
+        }
+
+        /* Map Styling */
+        #map {
+            height: 300px;
+            width: 100%;
+            border-radius: 10px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Next Stop and ETA */
+        #next-stop, #eta {
+            font-weight: 600;
+            color: #333;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            height: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            background-color: #ffa500; /* Orange */
+            height: 100%;
+            width: 0;
+            transition: width 0.5s ease;
+        }
+
+        /* Button Styling */
+        .refresh-button {
+            background-color: #1a73e8; /* Blue */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+            display: block;
+            margin: 20px auto;
+        }
+
+        .refresh-button:hover {
+            background-color: #1557a0; /* Darker Blue */
+        }
+    </style>
+</head>
+<body>
+    <!-- College Image -->
+    <div class="clg">
+        <img src="https://vignaniit.edu.in/images/09%20copy-1.jpg" alt="College Image">
+    </div>
+
+    <!-- Header and Navigation Bar -->
+    <div class="header">
+        <h1>NextBus</h1>
+    </div>
+    <div class="navbar">
+        <a href="#">Home</a>
+        <a href="#">About</a>
+        <a href="#">Services</a>
+        <a href="#">Contact</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Bus Tracking</h1>
+        <p id="route-info"></p>
+        <h2>Bus Number: <span id="bus-number">Loading...</span></h2>
+
+        <!-- Map -->
+        <div id="map"></div>
+
+        <!-- Next Stop and ETA -->
+        <h2>Next Stop: <span id="next-stop">Loading...</span></h2>
+        <p>ETA: <span id="eta">Calculating...</span></p>
+
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+        </div>
+
+        <!-- Refresh Button -->
+        <button class="refresh-button" onclick="updateTracking()">Refresh Tracking</button>
+    </div>
+
+    <script>
+        // Get details from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const start = urlParams.get('start');
+        const destination = urlParams.get('destination');
+        const busNumber = urlParams.get('bus');
+        document.getElementById("route-info").innerText = `From ${start} to ${destination}`;
+        document.getElementById("bus-number").innerText = busNumber;
+
+        // Bus stops data
+        const stops = ["Srikakulam", "Vizianagaram", "Visakhapatnam", "Anakapalli", "Duvvada"];
+        let currentStopIndex = stops.indexOf(start);
+
+        // Update next stop and ETA
+        function updateNextStop() {
+            if (currentStopIndex < stops.length - 1) {
+                document.getElementById("next-stop").innerText = stops[currentStopIndex + 1];
+                document.getElementById("eta").innerText = `${Math.floor(Math.random() * 10) + 5} min`;
+            } else {
+                document.getElementById("next-stop").innerText = "Final Destination Reached";
+                document.getElementById("eta").innerText = "-";
+            }
+        }
+
+        // Update progress bar
+        function updateProgressBar() {
+            let progress = ((currentStopIndex + 1) / stops.length) * 100;
+            document.getElementById("progress-bar").style.width = `${progress}%`;
+        }
+
+        // Initialize Google Map
+        function initMap() {
+            const map = new google.maps.Map(document.getElementById("map"), {
+                center: { lat: 17.6868, lng: 83.2185 }, // Default center (Visakhapatnam)
+                zoom: 10
+            });
+
+            // Add a marker for the bus location
+            const busLocation = { lat: 17.6868, lng: 83.2185 }; // Example bus location
+            new google.maps.Marker({ position: busLocation, map, title: "Bus Location" });
+            map.setCenter(busLocation);
+        }
+
+        // Simulate bus movement
+        function updateTracking() {
+            if (currentStopIndex < stops.length - 1) {
+                currentStopIndex++;
+                updateNextStop();
+                updateProgressBar();
+            } else {
+                alert("Bus has reached its final destination.");
+            }
+        }
+
+        // Initial setup
+        updateNextStop();
+        updateProgressBar();
+        initMap();
+    </script>
+</body>
+</html>
